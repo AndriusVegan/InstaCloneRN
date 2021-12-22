@@ -1,8 +1,7 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-web";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const Header = () => {
+const Header = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -13,7 +12,7 @@ const Header = () => {
       </TouchableOpacity>
 
       <View style={styles.iconContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push("NewPostScreen")}>
           <Image
             source={{
               uri: "https://img.icons8.com/fluency-systems-regular/60/ffffff/plus-2-math",
