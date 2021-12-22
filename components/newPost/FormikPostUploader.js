@@ -4,9 +4,10 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Divider } from "react-native-elements/dist/divider/Divider";
 import validUrl from "valid-url";
+// need to check if package is installed
 
 const PLACEHOLDER_IMG =
-  "https://www.brownweinraub.com/wp-content/uploads/2018/10/placeholder-image.jpg";
+  "https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder-image.jpg";
 // need to update image , thumbnail is still not showing up
 
 const uploadPostSchema = Yup.object().shape({
