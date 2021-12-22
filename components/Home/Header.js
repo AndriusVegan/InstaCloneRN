@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const Header = ({ navigation }) => {
+  // useNavigation hook can be used instead of prop drilling
   return (
     <View style={styles.container}>
       <TouchableOpacity>
