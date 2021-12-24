@@ -11,20 +11,27 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";
 
-const LoginForm = ({ navigation }) => {
-  const LoginFormSchema = Yup.object().shape({
+const SignupForm = ({ navigation }) => {
+  const SignupFormSchema = Yup.object().shape({
     email: Yup.string().email().required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters"),
+    username: Yup.string().required.min(
+      6,
+      "Username must be at least 6 characters"
+    ),
+    password: Yup.string().required.min(
+      6,
+      "Password must be at least 6 characters"
+    ),
   });
 
   return (
     <View style={styles.wrapper}>
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ email: "", username: "", password: "" }}
         onSubmit={(value) => {
           console.log(value);
         }}
-        validationSchema={LoginFormSchema}
+        validationSchema={SignupFormSchema}
         validateOnMount={true}
       >
         {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
@@ -42,7 +49,7 @@ const LoginForm = ({ navigation }) => {
             >
               <TextInput
                 placeholderTextColor="#444"
-                placeholder="Phone Number, username or email"
+                placeholder="Email"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -50,6 +57,29 @@ const LoginForm = ({ navigation }) => {
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
                 value={values.email}
+              />
+            </View>
+            <View
+              style={[
+                styles.inputField,
+                {
+                  borderColor:
+                    values.username.length < 1 ||
+                    Validator.validate(values.username)
+                      ? "#ccc"
+                      : "red",
+                },
+              ]}
+            >
+              <TextInput
+                placeholderTextColor="#444"
+                placeholder="User Name"
+                autoCapitalize="none"
+                keyboardType="username"
+                textContentType="username"
+                onChangeText={handleChange("username")}
+                onBlur={handleBlur("username")}
+                value={values.username}
               />
             </View>
             <View
@@ -82,18 +112,20 @@ const LoginForm = ({ navigation }) => {
 
             <Pressable
               titleSize={20}
-              // style={styles.button(isValid)}
+              //   style={styles.button(isValid)}
               style={styles.button}
               onPress={handleSubmit}
-              disabled={!isValid}
             >
-              <Text style={styles.buttonText}>Login In</Text>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </Pressable>
 
-            <View style={styles.signupContainer}>
-              <Text style={{ color: "#6bb0f5" }}> Don't have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.push('SignupScreen')}>
-                <Text style={{ color: "#6bb0f5" }}> Sign Up</Text>
+            <View style={styles.loginContainer}>
+              <Text style={{ color: "#6bb0f5" }}>
+                {" "}
+                Already have an account?{" "}
+              </Text>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Text style={{ color: "#6bb0f5" }}> Log In</Text>
               </TouchableOpacity>
             </View>
           </>
@@ -115,7 +147,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#0096F6",
-    // backgroundColor: isValid ? "#0096F6" : "#9aCaf7", not working with isValid
+    // backgroundColor: isValid ? "#0096F6" : "#9aCaf7",
     alignItems: "center",
     justifyContent: "center",
     minHeight: 42,
@@ -127,7 +159,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
   },
-  signupContainer: {
+  loginContainer: {
     flexDirection: "row",
     width: "100%",
     justifyContent: "center",
@@ -135,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginForm;
+export default SignupForm;
