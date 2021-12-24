@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,48 +12,93 @@ import * as Yup from "yup";
 import Validator from "email-validator";
 
 const LoginForm = () => {
+  const LonginFormSchema = Yup.object().shape({
+    email: Yup.string().email().required("Email is required"),
+    password: Yup.string().min(6, "Password must be at least 6 characters"),
+  });
+
   return (
     <View style={styles.wrapper}>
-      <View style={styles.inputField}>
-        <TextInput
-          placeholderTextColor="#444"
-          placeholder="Phone Number, username or email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          textContentType="emailAddress"
-          autoFocus={true}
-        />
-      </View>
-      <View style={styles.inputField}>
-        <TextInput
-          placeholderTextColor="#444"
-          placeholder="Password"
-          autoCapitalize="none"
-          autoCorrect={false}
-          secureTextEntry={true}
-          textContentType="password"
-        />
-      </View>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        onSubmit={(value) => {
+          console.log(value);
+        }}
+        validationSchema={LonginFormSchema}
+        validateOnMount={true}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
+          <>
+            <View
+              style={[
+                styles.inputField,
+                {
+                  borderColor:
+                    values.email.length < 1 || Validator.validate(values.email)
+                      ? "#ccc"
+                      : "red",
+                },
+              ]}
+            >
+              <TextInput
+                placeholderTextColor="#444"
+                placeholder="Phone Number, username or email"
+                autoCapitalize="none"
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                autoFocus={true}
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email}
+              />
+            </View>
+            <View
+              style={[
+                styles.inputField,
+                {
+                  borderColor:
+                    1 > values.password.length || values.password.length > 6
+                      ? "#ccc"
+                      : "red",
+                },
+              ]}
+            >
+              <TextInput
+                placeholderTextColor="#444"
+                placeholder="Password"
+                autoCapitalize="none"
+                autoCorrect={false}
+                secureTextEntry={true}
+                textContentType="password"
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+              />
+            </View>
 
-      <View style={{ alignItems: "flex-end", marginBottom: 30 }}>
-        <Text style={{ color: "#6bb0f5" }}>Forgot password?</Text>
-      </View>
+            <View style={{ alignItems: "flex-end", marginBottom: 30 }}>
+              <Text style={{ color: "#6bb0f5" }}>Forgot password?</Text>
+            </View>
 
-      <Pressable titleSize={20} style={styles.button}>
-        <Text
-          style={styles.buttonText}
-          onPress={() => console.log("you clicked me")}
-        >
-          Login In
-        </Text>
-      </Pressable>
+            <Pressable
+              titleSize={20}
+              // style={styles.button(isValid)}
+              style={styles.button}
+              onPress={handleSubmit}
+              disabled={!isValid}
+            >
+              <Text style={styles.buttonText}>Login In</Text>
+            </Pressable>
 
-      <View style={styles.signupContainer}>
-        <Text style={{ color: "#6bb0f5" }}> Don't have an acct? </Text>
-        <TouchableOpacity>
-          <Text style={{ color: "#6bb0f5" }}> Sign Up</Text>
-        </TouchableOpacity>
-      </View>
+            <View style={styles.signupContainer}>
+              <Text style={{ color: "#6bb0f5" }}> Don't have an account? </Text>
+              <TouchableOpacity>
+                <Text style={{ color: "#6bb0f5" }}> Sign Up</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+      </Formik>
     </View>
   );
 };
@@ -70,11 +115,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#0096F6",
+    // backgroundColor: isValid ? "#0096F6" : "#9aCaf7", not working with isValid
     alignItems: "center",
     justifyContent: "center",
     minHeight: 42,
     borderRadius: 4,
   },
+
   buttonText: {
     fontWeight: "600",
     color: "#fff",
