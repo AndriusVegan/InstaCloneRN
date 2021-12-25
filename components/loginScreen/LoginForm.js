@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import firebase from "../../firebase";
+import { firebase } from "../../firebase";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";

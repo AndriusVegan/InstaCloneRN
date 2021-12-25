@@ -7,10 +7,15 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import firebase from "../../firebase";
+import { firebase, db } from "../../firebase";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";
+
+const getRandomProfilePicture = async () => {
+  const response = await  fetch(`https://randomuser.me/api/`);
+  const data = await response.json();
+  return data.results[0].picture.large;
 
 const SignupForm = ({ navigation }) => {
   const SignupFormSchema = Yup.object().shape({
@@ -27,11 +32,15 @@ const SignupForm = ({ navigation }) => {
 
   const onSignup = async (email, username, password) => {
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-      // await firebase.auth().currentUser.updateProfile({
-      //   displayName: username,
-      // });
+      const authUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
       console.log("Firebase created successfully", email, username, password);
+      db.collection("users").add({
+        // adds new user name into users collection on firebase
+        owner_uid: authUser.user.uid,
+        username: username,
+        email: authUser.user.email,
+        profile_picture: await getRandomProfilePicture(),
+      })
     } catch (error) {
       Alert.alert("My Lord ...", error.message);
     }
