@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { firebase } from "../../firebase";
+import { firebase, db } from "../../firebase";
 
 const handleSignOut = async () => {
   try {
@@ -12,10 +12,14 @@ const handleSignOut = async () => {
 };
 const Header = ({ navigation }) => {
   // useNavigation hook can be used instead of prop drilling
+  useEffect(() => {
+    db.collectionGroup("post").onSnapshot((snapshot) => {
+      console.log(snapshot.docs.map((doc) => doc.data()));
+    });
+  }, []);
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-      onPress={handleSignOut} >
+      <TouchableOpacity onPress={handleSignOut}>
         <Image
           style={styles.logo}
           source={require("../../assets/header-logo.png")}

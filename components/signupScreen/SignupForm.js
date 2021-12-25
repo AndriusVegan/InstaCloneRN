@@ -34,7 +34,7 @@ const SignupForm = ({ navigation }) => {
     try {
       const authUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
       console.log("Firebase created successfully", email, username, password);
-      db.collection("users").add({
+      db.collection("users").doc(authUser.user.email).set({
         // adds new user name into users collection on firebase
         owner_uid: authUser.user.uid,
         username: username,
