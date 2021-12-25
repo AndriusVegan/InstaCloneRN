@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import firebase from "../../firebase";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";
@@ -24,12 +25,24 @@ const SignupForm = ({ navigation }) => {
     ),
   });
 
+  const onSignup = async (email, username, password) => {
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      // await firebase.auth().currentUser.updateProfile({
+      //   displayName: username,
+      // });
+      console.log("Firebase created successfully", email, username, password);
+    } catch (error) {
+      Alert.alert("My Lord ...", error.message);
+    }
+  };
+
   return (
     <View style={styles.wrapper}>
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
-        onSubmit={(value) => {
-          console.log(value);
+        onSubmit={(values) => {
+          onSignup(values.email, values.username, values.password);
         }}
         validationSchema={SignupFormSchema}
         validateOnMount={true}
