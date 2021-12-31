@@ -13,7 +13,7 @@ const Stories = () => {
             <Text style={{ color: "white" }}>
               {" "}
               {story.user.length > 11
-                ? story.user.slice(0, 10).toLocaleLowerCase() + "..."
+                ? story.user.slice(0, 6).toLocaleLowerCase() + "..."
                 : story.user.toLocaleLowerCase()}
             </Text>
           </View>
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    marginLeft: 6,
+    marginLeft: 18,
     borderWidth: 3,
     borderColor: "#ff8501",
   },

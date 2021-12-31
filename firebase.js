@@ -1,7 +1,18 @@
 // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  addDoc,
+  updateDoc,
+  collectionGroup,
+  onSnapshot,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 // above is a new way firebase 9.0.0
-import firebase from "firebase";
+// import firebase from "firebase";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,8 +28,19 @@ const firebaseConfig = {
 
 // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-const db = firebase.firestore();
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-export { firebase, db };
+export { db, auth };
+export {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  addDoc,
+  updateDoc,
+  collectionGroup,
+  onSnapshot,
+};

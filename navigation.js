@@ -24,7 +24,7 @@ export const SignedInStack = () => (
   </NavigationContainer>
 );
 
-eport const SignedOutStack = () => (
+export const SignedOutStack = () => (
   <NavigationContainer>
     <Stack.Navigator
       initialRouteName="LoginScreen"
@@ -35,5 +35,3 @@ eport const SignedOutStack = () => (
     </Stack.Navigator>
   </NavigationContainer>
 );
-
-
